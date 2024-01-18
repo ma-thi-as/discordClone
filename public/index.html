@@ -14,62 +14,7 @@
 </head>
 
 <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-        <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-        const constraints = { audio: true, video: false };
-        const configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] }
-        var peerConnection = new RTCPeerConnection(configuration);
-
-        const localStream = async () => {
-            await getUserMedia({ video: false, audio: true });
-            localStream.getTracks.forEach(track => {
-                peerConnection.addTrack(track, localStream);
-                console.log(track);
-            });
-
-        }
-        console.log(localStream);
-
-        socket.on('client', async (data) => {
-            // Puedes realizar otras operaciones específicas para myClient aquí
-            const offer = await peerConnection.createOffer();
-            await peerConnection.setLocalDescription(offer);
-            socket.emit('offer', { "offer": offer, "user": data.clientID });
-        });
-        // Inside the 'offer' event handler
-        socket.on('offer', async (data) => {
-            console.log('Offer received:', data);
-            await peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
-
-            const answer = await peerConnection.createAnswer();
-            await peerConnection.setLocalDescription(answer);
-
-            socket.emit('answer', { 'answer': answer, 'user': data.sender });
-        });
-
-        // Inside the 'answer' event handler
-        socket.on('answer', async (data) => {
-            console.log('Answer received:', data);
-            await peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
-        });
-
-        // Inside the icecandidate event listener
-        peerConnection.addEventListener('icecandidate', (evnt) => {
-            if (evnt.candidate) {
-                console.log("ICE Candidate: " + JSON.stringify(evnt.candidate));
-                socket.emit('ice-candidate', { 'candidate': evnt.candidate, 'user': otherUserId });
-            }
-        });
-
-
-    </script>
-
+   
 </body>
 
 </html>

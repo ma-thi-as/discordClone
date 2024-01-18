@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call</title>
+</head>
+<body>
+    <h2>Call</h2>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+
+    <audio id="remoteAudio" autoplay></audio>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const constraints = { audio: true, video: false };
+        const configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] }
+        var peerConnection = new RTCPeerConnection(configuration);
+        const remoteAudio = document.querySelector("#remoteAudio")
+
+        const initLocalStream = async () => {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                localStream.getTracks().forEach(track => {
+                    peerConnection.addTrack(track, localStream);
+                });
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+            }
+
+        };
+
+        initLocalStream();
+
+        let myClientID;
+        socket.on('client', async (socketData) => {
+            // Puedes realizar otras operaciones específicas para myClient aquí
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+            myClientID = socketData.clientID;
+            socket.emit('offer', { "offer": offer, "user": socketData.clientID });
+
+            // Inside the icecandidate event listener
+            peerConnection.addEventListener('icecandidate', evnt => {
+                console.log(peerConnection.candidate);
+                if (evnt.candidate) {
+                    socket.emit('ice-candidate', { 'candidate': evnt.candidate, 'user': socketData.clientID })
+                }
+            });
+
+        });
+
+
+
+        // Inside the 'offer' event handler
+        socket.on('offer', async (socketData) => {
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(socketData.offer));
+
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+
+            socket.emit('answer', { 'answer': answer, 'user': socketData.sender });
+        });
+
+        // Inside the 'answer' event handler
+        socket.on('answer', async (socketData) => {
+            console.log('Answer received:', socketData);
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(socketData.answer));
+        });
+
+        peerConnection.addEventListener('icegatheringstatechange', (event) => {
+            console.log("ICE Gathering State: " + peerConnection.iceGatheringState);
+        });
+
+
+        socket.on('ice-candidate', (socketData) => {
+            console.log("Candidaeet cortesaurio " + socketData);
+        });
+
+        peerConnection.addEventListener('track', async (event) => {
+            console.log(event);
+            const [remoteStream] = event.streams;
+            remoteAudio.srcObject = remoteStream;
+
+            // Play the audio only when the user interacts with the document
+            document.addEventListener('click', () => {
+                remoteAudio.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+            });
+        });
+
+    </script>
+
+</body>
+</html>
