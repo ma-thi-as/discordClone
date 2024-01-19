@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Call</title>
 </head>
+
 <body>
     <h2>Call</h2>
     <ul id="messages"></ul>
@@ -18,7 +20,19 @@
     <script>
         const socket = io();
         const constraints = { audio: true, video: false };
-        const configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] }
+        const configuration = {
+            'iceServers': [
+                {
+                    urls: "stun:stun.stunprotocol.org",
+                },
+                {
+                    urls: "turn:numb.viagenie.ca",
+                    credential: "muazkh",
+                    username: "webrtc@live.com",
+                },
+                // Otros servidores según sea necesario
+            ]
+        }
         var peerConnection = new RTCPeerConnection(configuration);
         const remoteAudio = document.querySelector("#remoteAudio")
 
@@ -27,6 +41,7 @@
                 localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
                 localStream.getTracks().forEach(track => {
                     peerConnection.addTrack(track, localStream);
+                    
                 });
             } catch (error) {
                 console.error('Error accessing microphone:', error);
@@ -87,14 +102,13 @@
             remoteAudio.srcObject = remoteStream;
 
             // Play the audio only when the user interacts with the document
-            document.addEventListener('click', () => {
-                remoteAudio.play().catch(error => {
-                    console.error('Failed to play audio:', error);
-                });
+            remoteAudio.play().catch(error => {
+                console.error('Failed to play audio:', error);
             });
         });
 
     </script>
 
 </body>
+
 </html>

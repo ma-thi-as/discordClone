@@ -1,10 +1,11 @@
 {
   "name": "discordclone",
   "version": "1.0.0",
-  "description": "Discord clone for educational ",
+  "description": "Discord clone because i want ",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "node index.js"
   },
   "author": "mathias U",
   "license": "ISC",

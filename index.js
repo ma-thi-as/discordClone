@@ -2,25 +2,47 @@ const express = require('express');
 const { createServer } = require('http');
 const { join } = require('path');
 const { Server } = require('socket.io');
+const fs = require('fs');
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/home', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(join(__dirname, 'templates/home.html'));
 
 })
-app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, 'public/index.html'));
-});
 
 // Ruta para las salas
 app.get('/room/:roomName', (req, res) => {
   res.sendFile(__dirname + '/templates/room.html');
 });
 
+app.get('/register', (req, res) => {
+  // Lee el contenido del archivo HTML
+  const htmlContent = fs.readFileSync(join(__dirname, 'templates/register.html'), 'utf-8');
+
+  // Envía el contenido HTML como respuesta
+  res.send(htmlContent);
+});
+
+app.post('/sign-up', (req, res) => {
+  // Los datos del formulario estarán disponibles en req.body
+  const username = req.body.username.trim();
+  
+  if(username) {
+    console.log('Username recibido:', username);
+    res.send('Datos recibidos correctamente');
+  }
+  res.send('Datos no recibidos correctamente');
+
+  // Hacer algo con los datos, por ejemplo, imprimirlos en la consola
+
+  // Puedes enviar una respuesta al cliente si es necesario
+  
+});
 
 
 
