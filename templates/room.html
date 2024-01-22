@@ -10,13 +10,13 @@
 <body>
     <h2>Call</h2>
     <ul id="messages"></ul>
-  
+
     <audio id="remoteAudio" autoplay></audio>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-        const constraints = { audio: true, video: false };
+        const constraints = { audio: true };
         const configuration = {
             'iceServers': [
                 {
@@ -35,10 +35,10 @@
 
         const initLocalStream = async () => {
             try {
-                localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                localStream = await navigator.mediaDevices.getUserMedia(constraints);
                 localStream.getTracks().forEach(track => {
                     peerConnection.addTrack(track, localStream);
-                    
+
                 });
             } catch (error) {
                 console.error('Error accessing microphone:', error);
@@ -66,7 +66,7 @@
 
         });
 
-        
+
         // Inside the 'offer' event handler
         socket.on('offer', async (socketData) => {
             await peerConnection.setRemoteDescription(new RTCSessionDescription(socketData.offer));
@@ -89,7 +89,7 @@
 
 
         socket.on('ice-candidate', (socketData) => {
-            console.log("Candidaeet cortesaurio " + socketData);
+            console.log("Candidaeet scoket: " + socketData);
         });
 
         peerConnection.addEventListener('track', async (event) => {
@@ -97,10 +97,13 @@
             const [remoteStream] = event.streams;
             remoteAudio.srcObject = remoteStream;
 
-            // Play the audio only when the user interacts with the document
-            remoteAudio.play().catch(error => {
-                console.error('Failed to play audio:', error);
-            });
+            // Intenta iniciar la reproducción directamente
+            try {
+                await remoteAudio.play();
+                console.log("Audio playback started!");
+            } catch (error) {
+                console.error("Failed to start audio playback:", error);
+            }
         });
 
     </script>
