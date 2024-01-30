@@ -1,0 +1,22 @@
+{
+  "name": "discordclone",
+  "version": "1.0.0",
+  "description": "Discord clone ",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "author": "mathias U",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express-session": "^1.18.0",
+    "socket.io": "^4.7.4"
+  },
+  "devDependencies": {
+    "express": "^4.18.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
+  }
+}

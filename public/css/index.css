@@ -1,0 +1,184 @@
+@font-face {
+  font-family: 'Climate Crisis';
+  src: url('/fonts/ClimateCrisis-Regular-VariableFont_YEAR.ttf') format('embedded-opentype'),
+    url('/fonts/ClimateCrisis-Regular-VariableFont_YEAR.ttf') format('woff2'),
+    url('/fonts/ClimateCrisis-Regular-VariableFont_YEAR.ttf') format('woff'),
+    url('/fonts/ClimateCrisis-Regular-VariableFont_YEAR.ttf') format('truetype'),
+    url('/fonts/ClimateCrisis-Regular-VariableFont_YEAR.ttf') format('svg');
+}
+
+@font-face {
+  font-family: 'Exo 2';
+  src: url('/fonts/Exo2-VariableFont_wght.ttf') format('embedded-opentype'),
+    url('/fonts/Exo2-VariableFont_wght.ttf') format('woff2'),
+    url('/fonts/Exo2-VariableFont_wght.ttf') format('woff'),
+    url('/fonts/Exo2-VariableFont_wght.ttf') format('truetype'),
+    url('/fonts/Exo2-VariableFont_wght.ttf') format('svg');
+}
+/* Falta mobile */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  /* background-color: #404eed; */
+  background-color: #1e0349;
+}
+
+
+#nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.button {
+  font-family: 'Exo 2', sans-serif;
+  font-size: larger;
+  border: none;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+}
+
+.menu {
+  display: none;
+  flex-direction: column;
+  background-color: #1e0349;
+  padding: 1rem;
+}
+
+.menu.active {
+  display: flex;
+  
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 0;
+}
+
+
+@media screen and (min-width: 992px) {
+  .button {
+    display: none;
+  }
+
+  #nav {
+    padding: 2% 15%;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .menu a {
+    padding: 0 1rem;
+  }
+
+  a {
+    /* Ajusta el margen según sea necesario */
+    text-decoration: none;
+    color: #ffffff;
+    font-family: 'Exo 2', sans-serif;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  /* Discord svg vertical*/
+  a>svg {
+    margin-top: -4px;
+  }
+
+  h1 {
+    font-size: 50px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Climate Crisis', sans-serif;
+  }
+
+  p {
+    margin-top: 30px;
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 300;
+    font-family: 'Exo 2', sans-serif;
+    line-height: 1.625;
+  }
+
+
+  .main-container {
+    position: absolute;
+    margin-top: 15dvh;
+    flex: 1;
+    /* Hace que ocupe el espacio restante */
+    width: 100%;
+    display: grid;
+    text-align: center;
+    color: #ffffff;
+  }
+
+  /* Estilos adicionales según sea necesario */
+  .main-container div {
+    max-width: 800px;
+    /* O ajusta según tus necesidades */
+    margin: 0 auto;
+    /* Centra el contenido en el eje horizontal */
+  }
+
+  /*Manter contexto del background para que no se salga nada*/
+  .bg {
+    position: fixed;
+    width: 100%;
+    height: 85vh;
+    z-index: -30;
+
+  }
+
+  /* Posicionar las nubes.svg*/
+  .bg>img:first-child {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -20;
+  }
+
+  /* Acomodar svg de la izquierda (Robo descarado al src del index de discrod )*/
+  .bg>img:not(:first-child) {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    display: block;
+    margin-left: -1030px;
+  }
+
+  /* Acomodar svg de la derecha*/
+  .bg>img:last-child {
+    display: block;
+    bottom: 0;
+    left: 50%;
+    margin-left: 370px;
+  }
+
+
+  .repos {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 4%;
+
+  }
+
+
+  
+}
