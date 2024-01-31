@@ -2,12 +2,14 @@ const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-const keys= require('../keyfile.json');
+
+const client_secret= process.env.gclient_secret
+const client_id = process.env.gclientID
 
 
 module.exports = function (app) {
     app.use(session({
-        secret: keys.web.client_secret, 
+        secret: client_secret, 
         resave: false,
         saveUninitialized: false
       }));
@@ -22,8 +24,8 @@ module.exports = function (app) {
   });
   
   passport.use(new GoogleStrategy({
-      clientID: keys.web.client_id,
-      clientSecret: keys.web.client_secret,
+      clientID: client_id,
+      clientSecret: client_secret,
       callbackURL: "/oauth2callback"
     },
     function(accessToken, refreshToken, profile, done) {

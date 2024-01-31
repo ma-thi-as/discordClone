@@ -1,9 +1,10 @@
 const { verifyGHOauthToken } = require('../config/githubAuth');
 
-const clientId = process.env.GH_BASIC_CLIENT_ID;
+const clientId = process.env.gitclientID;
+const clientSecret =  process.env.gitclient_secret;
 
 async function oauthSignInGH(req, res) {
-    res.render('sign-in', { client_id: clientId });
+    res.render('sign-in', { client_id: clientId , a:"XD"});
 }
 
 async function oauthCallbackGH(req, res) {
@@ -18,7 +19,7 @@ async function oauthCallbackGH(req, res) {
             },
             body: JSON.stringify({
                 client_id: clientId,
-                client_secret: process.env.GH_BASIC_SECRET_ID,
+                client_secret: clientSecret,
                 code: session_code
             })
         });

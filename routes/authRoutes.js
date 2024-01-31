@@ -17,4 +17,4 @@ router.get('/oauth2callback',
 router.get('/auth/github', oauthSignInGH);
 router.get('/oauth/callback', oauthCallbackGH);
 
-module.exports = rouhter;
+module.exports = router;
