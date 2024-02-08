@@ -3,8 +3,10 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 
-const client_secret= process.env.gclient_secret
-const client_id = process.env.gclientID
+const {User} = require('../Models/User');
+
+const client_secret= process.env.google_client_secret
+const client_id = process.env.google_clientID
 
 
 module.exports = function (app) {
@@ -30,6 +32,8 @@ module.exports = function (app) {
     },
     function(accessToken, refreshToken, profile, done) {
       // Aquí puedes manejar la lógica para almacenar el usuario en tu base de datos
+      const user = new User(profile.id, profile.displayName, accessToken, profile.provider);
+      user.saveToken()
       return done(null, profile);
     }
   ));

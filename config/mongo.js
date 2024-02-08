@@ -16,9 +16,7 @@ const client = new MongoClient(uri, {
 
 async function connectToAtlas() {
     try {
-        // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
-        // Return the connected client
         return client;
     } catch (error) {
         console.error("Error connecting to MongoDB:", error);
@@ -26,4 +24,16 @@ async function connectToAtlas() {
     }
 }
 
-module.exports = connectToAtlas;
+async function DBCollectionCreation(collection_name) {
+    try {
+        const db = client.db("test-db")
+        const collection = db.collection(collection_name);
+        return collection;
+
+    } catch (error) {
+        throw error
+    }
+    
+}
+
+module.exports = {connectToAtlas,  DBCollectionCreation};

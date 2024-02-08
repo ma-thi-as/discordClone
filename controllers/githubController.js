@@ -1,10 +1,10 @@
-const { verifyGHOauthToken } = require('../config/githubAuth');
+const { verifyGHOauthToken } = require('../config/veryGitOauth');
 
-const clientId = process.env.gitclientID;
-const clientSecret =  process.env.gitclient_secret;
+const clientId = process.env.git_clientID;
+const clientSecret =  process.env.git_client_secret;
 
 async function oauthSignInGH(req, res) {
-    res.render('sign-in', { client_id: clientId , a:"XD"});
+    res.render('sign-in', { client_id: clientId});
 }
 
 async function oauthCallbackGH(req, res) {
@@ -26,11 +26,11 @@ async function oauthCallbackGH(req, res) {
 
         const data = await response.json();
         const access_token = data.access_token;
-
         // Handle the access token or send it back in the response
         await verifyGHOauthToken(access_token, res);
-        res.send(access_token);
-    } catch (error) {
+
+        res.redirect("/");
+    } catch (error) { 
         console.error('Error:', error);
         res.status(500).send('Internal Server Error');
     }
