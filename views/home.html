@@ -19,10 +19,13 @@
 <body>
     <div class="container">
         <section>
-            <nav>
-                <a href="#">a</a>
-                <a href="#">b</a>
-                <a href="#">c</a>
+            <nav id="user-search-nav">
+                <form id="searchForm">
+                    <label for="search">User Name:</label>
+                    <input id="search" type="text" required>
+                    <button type="submit">Enter</button>
+                </form>
+
             </nav>
         </section>
         <section>
@@ -32,9 +35,14 @@
                 <button type="submit">Enter</button>
             </form>
         </section>
+
+
+
     </div>
 
+    <script>
 
+    </script>
     <script src="/socket.io/socket.io.js"></script>
 
     <script src="/js/home.js">

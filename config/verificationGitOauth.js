@@ -1,6 +1,6 @@
 const {User} = require('../Models/User');
 
-async function verifyGHOauthToken(access_token, res) {
+async function verifyGHOauthToken(access_token, req) {
     try {
         const response = await fetch('https://api.github.com/user', {
             method: 'GET',
@@ -13,7 +13,8 @@ async function verifyGHOauthToken(access_token, res) {
         });
 
         const data = await response.json();
-        const user = new User(data.id, data.login, access_token, "git");
+        
+        const user = new User(data.id, data.login, access_token, "github");
         return user.saveToken();
 
     } catch (error) {
