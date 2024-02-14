@@ -1,24 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
 
-const { verifyGHOauthToken } = require('../config/verificationGitOauth');
+const { User } = require('../Models/User');
 
 const clientId = process.env.git_clientID;
 const clientSecret = process.env.git_client_secret;
 
-router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-router.get('/oauth2callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  function (req, res) {
-    // Redirecciona al usuario después de la autenticación exitosa
-    res.redirect('/');
-  }
-);
-
-
 router.get('/auth/github', async (req, res) => res.render('sign-in', { client_id: clientId }));
+
 router.get('/oauth/callback', async (req, res) => {
   try {
     const session_code = req.query.code;
@@ -48,10 +37,11 @@ router.get('/oauth/callback', async (req, res) => {
 
 
     const userData = await userResponse.json();
-
+    
+    const user = new User(userData.id,userData.login, access_token, "github");    
+    await user.saveToken();
     // Store user data in session
     req.session.user = userData;
-    
     res.redirect("/home");
   } catch (error) {
     console.error('Error:', error);

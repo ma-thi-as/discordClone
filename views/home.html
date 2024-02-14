@@ -19,36 +19,28 @@
 <body>
     <div class="container">
         <section>
-            <nav id="user-search-nav">
-                <form id="searchForm">
-                    <label for="search">User Name:</label>
-                    <input id="search" type="text" required>
-                    <button type="submit">Enter</button>
-                </form>
+            <form id="search-form">
+                <label for="search">Search User:</label>
+                <input id="input_username" type="text" placeholder="mat-hi..." required>
+                <button type="submit">Search</button>
+            </form>
+            <div id="search-result"></div>
 
-            </nav>
+            <div id="friend-list"></div>
         </section>
+
         <section>
             <form id="roomForm">
                 <label for="name">Enter Room Name:</label>
                 <input id="nameInput" type="text" required>
-                <button type="submit">Enter</button>
+                <button type="submit">Create Room</button>
             </form>
         </section>
-
-
-
     </div>
 
-    <script>
-
-    </script>
+    <!-- Your JavaScript code goes here -->
     <script src="/socket.io/socket.io.js"></script>
-
-    <script src="/js/home.js">
-
-    </script>
-
+    <script src="/js/home.js"></script>
 </body>
 
 </html>
