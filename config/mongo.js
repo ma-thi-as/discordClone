@@ -1,9 +1,12 @@
 // mongo.js
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const cluster = process.env.cluster;
-const user = process.env.user;
+require('dotenv').config()
 
-const uri = `mongodb+srv://${user}@${cluster}/?retryWrites=true&w=majority`;
+const MONGODB_HOST = process.env.MONGODB_HOST;
+const MONGODB_USER = process.env.MONGODB_USER;
+
+const uri = `mongodb+srv://${MONGODB_USER}@${MONGODB_HOST}/?retryWrites=true&w=majority&appName=discordcluster`;
+
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
